@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Restaurant</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class ="container">
+        <div class = "row">
+            <form action="" method="post" autocomplete="off">
+                {% csrf_token %}
+                
+               
+                {% for field in form %}
+
+                        <div class="form-group">
+                        {% if field.field.widget.input_type == 'checkbox' %}
+                          {{field}}
+                          {{field.label}}
+                        {% else %}
+                            {%if field.name == 'place' %}
+                            <select name="place" class="form-control" disabled required="" id="id_place">
+                            <option value="{{field.value}}" selected = ""></option> 
+                            </select>
+                            {% else %}
+                            {{field.label}}
+                            {{field}}
+                            {%endif%}  
+                            {%endif%}                      
+
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <p style="color: red">{{error}}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                {%endfor%}    
+                    
+                        
+                        
+                {% comment %} {% endif %}  {% endcomment %}
+                <input class="btn btn-success btn-lg btn-block" type="submit" value ="update">
+                  
+            </form>
+        </div>
+    </div>
+</body>
+</html>

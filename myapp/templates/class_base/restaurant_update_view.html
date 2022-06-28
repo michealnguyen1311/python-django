@@ -1,0 +1,44 @@
+    {% extends 'base/base.html'%}
+
+    {% block title %}
+        Update View  
+    {% endblock title %}
+    {% block content %} 
+            <div class="col-md-12 ">
+
+
+
+            <form action="" method="post" autocomplete="off">
+                {% csrf_token %}
+                {% for field in form %}
+                {% if field.place == 'place' %}
+                    {% comment %} <div class="form-group">
+                        {{field.label}} {% endcomment %}
+                        {% comment %} <input type="text" name="name" value=""
+                        class="form-control" maxlength="50" disabled id="id_name"> {% endcomment %}
+                        {% comment %} {{field}}
+                        </div>                     {% endcomment %}
+                        <div class="form-group">
+                            {{field.label}}
+                            <input type="text" class="form-control" disabled value="{{ field.value }}">
+                        </div>
+                                   
+                {% else %} 
+                    <div class="form-group">
+                        {{field.label}}
+                        {{field}}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <p class= "invalid-feedback" style="display: block !important">{{error}}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endif %} 
+                {% endfor %}
+                <input class="btn btn-success btn-lg btn-block" type="submit" value ="update">
+            </form>
+        </div>
+        </div>
+    {% endblock content %} 
+
+    

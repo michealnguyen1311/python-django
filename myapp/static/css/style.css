@@ -1,0 +1,15 @@
+.function-views {
+    background-color: rgb(64, 87, 64);
+}
+.class-views {
+    background-color: rgb(187, 159, 124);
+}
+i.bi{
+    margin-right: 10px;
+    font-size: 20px;
+}
+button.delete{
+    background-color: transparent;
+    border: none;
+    color: Blue;
+}

@@ -1,0 +1,192 @@
+    {% extends 'base/base.html'%}
+
+    {% block title %}
+        List view Restaurant 
+    {% endblock title %}
+    
+    {% block content %} 
+    {% load static %}
+    {% load myfilter %}
+    {{class_name}}
+
+<div class = "container-fluid">
+        <div class="row">
+            <div class = "col-12">
+                <table class="table table-striped">
+                    {% if all_restaurants %}
+                    <thead>
+                    <tr>
+                        <th scope="col">Index</th>
+                        <th scope="col">Place Name</th>
+                        <th scope="col">Serve Pizza</th>
+                        <th scope="col">Serve HotDogs</th>
+                        <th scope="col">Serve Pho</th>
+                        <th scope="col">
+                            <a href = "{% url 'class_add_restaurant' %}">
+                                <i class="bi bi-plus-circle"></i> 
+                            </a>
+                        </th>
+                    </tr>
+                    {% for restaurant in all_restaurants %}
+                        <tr>
+                            <td scope="row">{{page_obj.number|make_index_paginattion:forloop.counter}}</td>
+                            <td scope="row"><a href="{% url 'class_view_detail_restaurant' pk=restaurant.place.id %}" url="/restaurant/detail/{{restaurant.id}}">{{ restaurant.place.name }}</a></td>
+                            <td>
+                            <input type="checkbox" name="serves_hot_dogs" id="serves_hot_dogs" disabled {% if restaurant.serves_hot_dogs %} checked {% endif %}>
+                            </td>
+                            
+                            <td>
+                            <input type="checkbox" name="serves_pizza" id="serves_pizza" disabled {% if restaurant.serves_pizza %} checked {% endif %}>
+                            </td>
+                            
+                            <td>
+                            <input type="checkbox" name="serves_pho" id="serves_pho" disabled {% if restaurant.serves_pho %} checked {% endif %}>
+                            </td>
+                            <td>
+                                <a href="{% url 'class_view_detail_restaurant' pk=restaurant.place.id %}">
+                                <i class="bi bi-eye"></i>
+                                </a>
+                                <a href ="{% url 'class_update_restaurant' pk=restaurant.place.id %}"><i class="bi bi-pen"></i>
+                                </a>
+                                <a href ="{% url 'class_delete_place' pk=restaurant.place.id %}"><i class="bi bi-trash"></i>
+                                </a> 
+                                                                
+                            </td>
+                            
+                            
+                            
+                            
+                            
+                        
+                        </tr>
+                        </thead>
+                    {% endfor %}
+                    {% endif %}
+                <tfoot>
+                    <tr>
+                        <td colspan ="5">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                <a class="page-link" href="?page={{page_obj.previous_page_number}}" aria-label="Previous">
+                        <span aria-hidden="true">&raquo;</span>
+                            </a>
+                                </li>
+
+                            {%else%}
+                                <li class="page-item disabled">
+                                <a class="page-link"  aria-label="Previous">
+                                <span aria-hidden="true">&raquo;</span>
+
+                                </a>
+                                </li>
+                            {%endif%}
+                            
+                            {% for page in page_obj.paginator.num_pages|make_range %}
+                            {% if page_obj.number == page %}
+                                <li class="page-item active"><a class="page-link" href="?page={{ page }}">{{ page }}
+                            </a></li>
+
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}
+                            </a></li>
+
+                            {% endif %}
+                    
+                           
+
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            </a>
+                            </li>
+                            {%else%}
+                            <li class="page-item disabled">
+                            <a class="page-link"  aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                            </a>
+                            </li>
+ 
+                            {%endif%}
+                            {% comment %} <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li> {% endcomment %}
+                            
+                            </ul>
+                            </nav>
+                        </td>
+                    </tr>
+                </tfoot>
+                </table>
+
+                {% comment %} <div>
+                    <span style="float: left;">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{page_obj.previous_page_number}}">Previous</a>
+                    {%else%}
+                        <a disabled="true">Previous</a>
+                    {%endif%}
+                    </span>
+                    <span style="display: inline-block; text-align: center;" > page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+                    <span style="float: right;">
+                    {% if page_obj.has_next %}
+                        <a href="?page={{page_obj.next_page_number}}">next</a>
+                    {%else%}
+                        <a disabled>next</a>
+                    {%endif%}
+                    </span> {% endcomment %}
+                {% comment %} </div>
+                <p>Current Page {{ page_obj.number }} </p>
+                <p>Co page truoc ko?  {{ page_obj.has_previous }} </p>
+                <p>Co page sau ko?  {{ page_obj.has_next }} </p>
+                <p>Tong cong co bao nhieu page {{ page_obj.paginator.num_pages }} </p>
+
+
+            </div> {% endcomment %}
+        {% comment %} </div>
+    </div> {% endcomment %}
+    <!-- Modal -->
+<div class="modal fade" id="confirm-delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ban co muon xoa hay ko ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a id="btn-delete" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <script>
+        $(document).ready(function(){
+            $(".delete").each(function(){
+                $(this).click(function(){
+                    const url = $(this).data('url-delete');
+                    const body = $(this).data('info');
+                    $('.modal-body').text("Ban co muon xoa ko"body);
+                    $("#btn-delete").attr("href", url);
+                    $("#confirm-delete").modal('show');
+                    
+                });
+            });
+        });
+        
+    </script>
+    
+    {% endblock content %}
+
+ 
+ 
+
